@@ -1,8 +1,10 @@
 let express = require('express')
 let userRouter = require("./routes/user.routes");
-let bookRouter = require("./routes/book.routes"); // add this
+let bookRouter = require("./routes/book.routes"); 
 let rentalRouter = require("./routes/rental.routes")
 const connectDB = require('./config/dbconnect')
+
+require("dotenv").config();
 
 
 let app = express()
@@ -10,9 +12,9 @@ app.use(express.json());
 
 connectDB();
 app.use("/", userRouter);
-app.use("/books", bookRouter); // add this
+app.use("/books", bookRouter);
 app.use("/rentals", rentalRouter);
-const PORT = 4444; // use const, not implicit global
+const PORT = 4444; 
 app.listen(PORT, () => {
-    console.log(`server is running on http://localhost:${PORT}`); // missing colon
+    console.log(`server is running on http://localhost:${PORT}`); 
 })
