@@ -2,10 +2,18 @@ const Rental = require("../models/Rental");
 const Book = require("../models/Book");
 const User = require("../models/User");
 
+
 // Issue Book
 const issueBook = async (req, res) => {
     try {
-        const { student, book, returnDate } = req.body;
+        if (req.user.role !== "student") {
+        return res.status(403).json({
+            message: "Only students can issue books"
+        });
+        }
+
+        const { book } = req.body;
+        const student = req.user.id;
 
         const bookData = await Book.findById(book);
 
@@ -21,10 +29,28 @@ const issueBook = async (req, res) => {
             });
         }
 
+        const activeBooks = await Rental.countDocuments({
+            student,
+            returned: false
+        });
+
+        if (activeBooks >= 3) {
+            return res.status(400).json({
+                message: "Maximum 3 books can be issued."
+            });
+        }
+
+
+        const issueDate = new Date();
+
+        const autoReturnDate = new Date(issueDate);
+        autoReturnDate.setDate(autoReturnDate.getDate() + 14);
+
         const rental = await Rental.create({
             student,
             book,
-            returnDate
+            issueDate,
+            returnDate: autoReturnDate
         });
 
         bookData.quantity -= 1;
@@ -90,7 +116,7 @@ const returnBook = async (req, res) => {
             const diff =
                 Math.ceil((today - dueDate) / (1000 * 60 * 60 * 24));
 
-            rental.fine = diff * 10; // ₹10 per day
+            rental.fine = diff * 5; // ₹5 per day
         }
 
         await rental.save();
@@ -139,10 +165,32 @@ const deleteRental = async (req, res) => {
     }
 
 };
+// My Issued Books
+const myIssuedBooks = async (req, res) => {
+    try {
+
+        const rentals = await Rental.find({
+            student: req.user.id
+        })
+        .populate("book", "title author category quantity")
+        .sort({ issueDate: -1 });
+
+        res.status(200).json({
+            total: rentals.length,
+            rentals
+        });
+
+    } catch (err) {
+        res.status(500).json({
+            message: err.message
+        });
+    }
+};
 
 module.exports = {
     issueBook,
     getAllRentals,
     returnBook,
-    deleteRental
+    deleteRental,
+    myIssuedBooks
 };

@@ -2,12 +2,38 @@ const Book = require('../models/Book');
 
 let showBooks = async (req, res) => {
     try {
-        const books = await Book.find();
+
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * limit;
+
+        const search = req.query.search || "";
+        const sort = req.query.sort || "createdAt";
+        const order = req.query.order === "asc" ? 1 : -1;
+
+        const query = {
+            $or: [
+                { title: { $regex: search, $options: "i" } },
+                { author: { $regex: search, $options: "i" } },
+                { category: { $regex: search, $options: "i" } }
+            ]
+        };
+
+        const totalBooks = await Book.countDocuments(query);
+
+        const books = await Book.find(query)
+            .sort({ [sort]: order })
+            .skip(skip)
+            .limit(limit);
 
         res.status(200).json({
             success: true,
+            currentPage: page,
+            totalPages: Math.ceil(totalBooks / limit),
+            totalBooks,
             books
         });
+
     } catch (err) {
         res.status(500).json({
             success: false,

@@ -13,9 +13,9 @@ const {
     deleteBook
 } = require("../controllers/bookController");
 
-console.log("auth:", auth);
-console.log("adminOnly:", adminOnly);
-console.log("addBook:", addBook);
+// console.log("auth:", auth);
+// console.log("adminOnly:", adminOnly);
+// console.log("addBook:", addBook);
 
 router.get("/", auth, showBooks);
 

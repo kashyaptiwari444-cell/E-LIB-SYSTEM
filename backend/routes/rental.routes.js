@@ -1,16 +1,23 @@
 const express = require("express");
 const router = express.Router();
 
+const auth = require("../middleware/auth");
+const adminOnly = require("../middleware/adminOnly");
+
+
 const {
     issueBook,
     getAllRentals,
     returnBook,
-    deleteRental
+    deleteRental,
+    myIssuedBooks
 } = require("../controllers/rentalController");
 
-router.post("/issue", issueBook);
-router.get("/", getAllRentals);
-router.put("/return/:id", returnBook);
-router.delete("/:id", deleteRental);
+router.post("/issue", auth, issueBook);
+router.get("/mybooks", auth, myIssuedBooks);
+router.get("/", auth, adminOnly, getAllRentals);
+router.put("/return/:id", auth, returnBook);
+router.delete("/:id", auth, adminOnly, deleteRental);
+router.get("/mybooks", auth, myIssuedBooks);
 
 module.exports = router;
