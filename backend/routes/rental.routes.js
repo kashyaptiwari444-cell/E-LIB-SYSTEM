@@ -18,6 +18,5 @@ router.get("/mybooks", auth, myIssuedBooks);
 router.get("/", auth, adminOnly, getAllRentals);
 router.put("/return/:id", auth, returnBook);
 router.delete("/:id", auth, adminOnly, deleteRental);
-router.get("/mybooks", auth, myIssuedBooks);
 
 module.exports = router;

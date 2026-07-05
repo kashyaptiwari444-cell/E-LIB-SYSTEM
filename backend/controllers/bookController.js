@@ -112,12 +112,20 @@ let editBook = async (req, res) => {
             message: "Book updated successfully",
             book
         });
-    } catch (err) {
-        res.status(400).json({
-            success: false,
-            message: err.message
-        });
-    }
+    } // catch (err) {
+    //     res.status(400).json({
+    //         success: false,
+    //         message: err.message
+    //     });
+    // }
+    catch (err) {
+
+    console.log(err);
+    console.log(err.response);
+
+    alert(err.response?.data?.message || err.message);
+
+}
 };
 
 let deleteBook = async (req, res) => {

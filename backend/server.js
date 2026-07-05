@@ -1,26 +1,31 @@
-let express = require('express')
-let userRouter = require("./routes/user.routes");
-let bookRouter = require("./routes/book.routes"); 
-let rentalRouter = require("./routes/rental.routes")
-const connectDB = require('./config/dbconnect')
-const dashboardRoute = require("./routes/dashboardRoute");
+const express = require("express");
+const cors = require("cors");
+
+const userRouter = require("./routes/user.routes");
+const bookRouter = require("./routes/book.routes");
+const rentalRouter = require("./routes/rental.routes");
+const dashboardRoute = require("./routes/dashboardRoutes");
+
+const connectDB = require("./config/dbconnect");
 
 require("dotenv").config();
 
+const app = express();
 
-
-let app = express()
+// Middlewares
+app.use(cors());
 app.use(express.json());
 
 connectDB();
 
+// Routes
 app.use("/", userRouter);
-app.use("/books", bookRouter); 
+app.use("/books", bookRouter);
 app.use("/rentals", rentalRouter);
 app.use("/dashboard", dashboardRoute);
 
+const PORT = 4444;
 
-const PORT = 4444; 
 app.listen(PORT, () => {
-    console.log(`server is running on http://localhost:${PORT}`); 
-})
+    console.log(`Server running on http://localhost:${PORT}`);
+});
