@@ -4,7 +4,7 @@ const Rental = require("../models/Rental");
 
 const getDashboard = async (req, res) => {
     try {
-
+        
         const totalBooks = await Book.countDocuments();
 
         const totalStudents = await User.countDocuments({
