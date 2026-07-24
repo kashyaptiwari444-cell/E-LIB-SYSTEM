@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import api from '../../api/axios'
+import { bookImageUrl } from '../../utils/imageUrl'
 
 export default function AllRentals() {
   const [rentals, setRentals] = useState([])
@@ -47,6 +48,7 @@ export default function AllRentals() {
       <table>
         <thead>
           <tr>
+            <th>Cover</th>
             <th>Student</th>
             <th>Book</th>
             <th>Issue Date</th>
@@ -59,6 +61,13 @@ export default function AllRentals() {
         <tbody>
           {rentals.map((r) => (
             <tr key={r._id} className={isOverdue(r) ? 'overdue' : ''}>
+              <td>
+                {r.book?.image ? (
+                  <img className="thumb" src={bookImageUrl(r.book.image)} alt={r.book.title} />
+                ) : (
+                  <div className="thumb thumb-empty">No image</div>
+                )}
+              </td>
               <td>
                 {r.student?.name}
                 <br />

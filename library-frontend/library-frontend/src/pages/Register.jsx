@@ -55,12 +55,7 @@ export default function Register() {
           minLength={6}
         />
 
-        {/* <label>Role</label>
-        <select name="role" value={form.role} onChange={handleChange}>
-          <option value="student">Student</option>
-          <option value="admin">Admin</option>
-        </select> */}
-
+        
         <button type="submit" disabled={loading}>
           {loading ? 'Registering...' : 'Register'}
         </button>

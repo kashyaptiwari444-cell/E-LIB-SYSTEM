@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const sendEmail = require("../utils/sendEmail");
 
 // Get All Users
 const showHome = async (req, res) => {
@@ -49,6 +50,16 @@ const addUser = async (req, res) => {
             password: hashedPassword,
             role
         });
+
+        // Welcome Email
+        await sendEmail(
+            user.email,
+            "Welcome to 📚E-Library-System",
+            `Hello ${user.name},
+        📚Welcome to E-Library Management System.
+        📚Your account has been created successfully.
+        🎯Happy Reading!`
+        );
 
         res.status(201).json({
             message: "User Registered Successfully",

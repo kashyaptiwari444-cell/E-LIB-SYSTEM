@@ -3,7 +3,7 @@ const router = express.Router();
 
 const auth = require("../middleware/auth");
 const adminOnly = require("../middleware/adminOnly");
-console.log(require("../middleware/adminOnly"));
+const upload = require("../middleware/upload");
 
 const {
     showBooks,
@@ -13,17 +13,13 @@ const {
     deleteBook
 } = require("../controllers/bookController");
 
-// console.log("auth:", auth);
-// console.log("adminOnly:", adminOnly);
-// console.log("addBook:", addBook);
+router.get("/", showBooks);
 
-router.get("/", auth, showBooks);
+router.get("/show-book-details/:id", showBookDetails);
 
-router.get("/show-book-details/:id", auth, showBookDetails);
+router.post("/add-book", auth, adminOnly, upload.single("image"), addBook);
 
-router.post("/add-book", auth, adminOnly, addBook);
-
-router.put("/edit-book/:id", auth, adminOnly, editBook);
+router.put("/edit-book/:id", auth, adminOnly, upload.single("image"), editBook);
 
 router.delete("/delete-book/:id", auth, adminOnly, deleteBook);
 

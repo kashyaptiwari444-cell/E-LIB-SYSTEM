@@ -11,39 +11,34 @@ import Dashboard from './pages/admin/Dashboard'
 import ManageBooks from './pages/admin/ManageBooks'
 import AllRentals from './pages/admin/AllRentals'
 import ManageUsers from './pages/admin/ManageUsers'
-import DashBooks from './pages/DashBooks'
-
 import Main_Dash from './pages/Main_Dash'
+import Dashboard_Footer from './pages/Main_Dash_Footer'
 
 function App() {
   return (
     <>
-      {/* <Navbar /> */}
+      
       <div className="container">
         <Routes>
-          {/* <Route path="/" element={<Navigate to="/" replace />} /> */}
 
-          <Route path="/" element={<Main_Dash />} />
-          <Route path="/login" element={ <Login />} />
+          <Route path="/" element={<Navigate to="/main_dash" replace />} />
+          <Route path='/main_dash' element={
+            <>
+            <Main_Dash/>
+            <BooksList />
+            <Dashboard_Footer/>
+
+            </>
+            } />
+          <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-
-
-          {/* Dash book */}
-           <Route
-            path="/dashbooks"
-            element={
-              <ProtectedRoute>
-                <DashBooks />
-              </ProtectedRoute>
-            }
-            />
-
+            
           {/* Student routes */}
           <Route
             path="/books"
             element={
               <ProtectedRoute>
-                 <Navbar />
+                <Navbar />
                 <BooksList />
               </ProtectedRoute>
             }
@@ -52,7 +47,7 @@ function App() {
             path="/my-books"
             element={
               <ProtectedRoute>
-                 <Navbar />
+                <Navbar />
                 <MyBooks />
               </ProtectedRoute>
             }
@@ -63,8 +58,8 @@ function App() {
             path="/admin/dashboard"
             element={
               <AdminRoute>
-               <Navbar />
-               <Dashboard />
+                <Navbar />
+                <Dashboard />
               </AdminRoute>
             }
           />
@@ -72,7 +67,7 @@ function App() {
             path="/admin/books"
             element={
               <AdminRoute>
-                 <Navbar />
+                <Navbar />
                 <ManageBooks />
               </AdminRoute>
             }
@@ -81,7 +76,7 @@ function App() {
             path="/admin/rentals"
             element={
               <AdminRoute>
-                 <Navbar />
+                <Navbar />
                 <AllRentals />
               </AdminRoute>
             }
@@ -90,13 +85,13 @@ function App() {
             path="/admin/users"
             element={
               <AdminRoute>
-                 <Navbar />
+                <Navbar />
                 <ManageUsers />
               </AdminRoute>
             }
           />
 
-          <Route path="*" element={<Navigate to="/login" replace />} />
+          <Route path="*" element={<Navigate to="/main_dash" replace />} />
         </Routes>
       </div>
     </>

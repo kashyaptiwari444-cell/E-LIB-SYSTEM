@@ -1,6 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 
+const path = require("path");
+
+
 const userRouter = require("./routes/user.routes");
 const bookRouter = require("./routes/book.routes");
 const rentalRouter = require("./routes/rental.routes");
@@ -23,6 +26,8 @@ app.use("/", userRouter);
 app.use("/books", bookRouter);
 app.use("/rentals", rentalRouter);
 app.use("/dashboard", dashboardRoute);
+// ... existing code ...
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 const PORT = 4444;
 

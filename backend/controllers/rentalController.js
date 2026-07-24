@@ -74,7 +74,8 @@ const getAllRentals = async (req, res) => {
 
         const rentals = await Rental.find()
             .populate("student", "name email")
-            .populate("book", "title author");
+            .populate("book", "title author image")
+            
 
         res.json(rentals);
 
@@ -172,7 +173,7 @@ const myIssuedBooks = async (req, res) => {
         const rentals = await Rental.find({
             student: req.user.id
         })
-        .populate("book", "title author category quantity")
+        .populate("book", "title author category quantity image")
         .sort({ issueDate: -1 });
 
         res.status(200).json({

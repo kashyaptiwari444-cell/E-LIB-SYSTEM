@@ -12,7 +12,7 @@ export default function Navbar() {
 
   return (
     <nav className="navbar">
-      <div className="navbar-brand">📚 Library</div>
+      <div className="navbar-brand">📚 E-Library</div>
       <div className="navbar-links">
         {!user && (
           <>

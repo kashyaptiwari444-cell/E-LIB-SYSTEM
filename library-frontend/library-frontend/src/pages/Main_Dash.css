@@ -151,7 +151,7 @@ text-align:center;
 .features h2{
 font-size:40px;
 margin-bottom:50px;
-color:#1e293b;
+color:#841c1c;
 }
 
 .cards{
@@ -161,7 +161,7 @@ gap:30px;
 }
 
 .card{
-background:white;
+background:rgb(123, 160, 223);
 padding:35px;
 border-radius:12px;
 box-shadow:0 10px 20px rgba(0,0,0,.1);
@@ -174,11 +174,11 @@ transform:translateY(-10px);
 
 .card h3{
 margin-bottom:15px;
-color:#2563eb;
+color:#750101;
 }
 
 .card p{
-color:#555;
+color:#4b4747;
 line-height:1.7;
 }
 

@@ -1,5 +1,8 @@
 const Book = require('../models/Book');
 
+const fs = require("fs");
+const path = require("path");
+
 let showBooks = async (req, res) => {
     try {
 
@@ -7,17 +10,30 @@ let showBooks = async (req, res) => {
         const limit = parseInt(req.query.limit) || 10;
         const skip = (page - 1) * limit;
 
-        const search = req.query.search || "";
         const sort = req.query.sort || "createdAt";
         const order = req.query.order === "asc" ? 1 : -1;
 
-        const query = {
-            $or: [
-                { title: { $regex: search, $options: "i" } },
-                { author: { $regex: search, $options: "i" } },
-                { category: { $regex: search, $options: "i" } }
-            ]
-        };
+        const { title, author, category } = req.query;
+
+        let query = {};
+
+        if (title) {
+            query.title = {
+                $regex: title,
+                $options: "i",
+            };
+        }
+
+        if (author) {
+            query.author = {
+                $regex: author,
+                $options: "i",
+            };
+        }
+
+        if (category) {
+            query.category = category;
+        }
 
         const totalBooks = await Book.countDocuments(query);
 
@@ -67,13 +83,14 @@ let showBookDetails = async (req, res) => {
 
 let addBook = async (req, res) => {
     try {
-        const { title, author, category, quantity } = req.body;
+        const { title, author, category, quantity, image } = req.body;
 
         const book = await Book.create({
             title,
             author,
             category,
-            quantity
+            quantity,
+            image: req.file ? `/uploads/books/${req.file.filename}` : null
         });
 
         res.status(201).json({
@@ -91,41 +108,30 @@ let addBook = async (req, res) => {
 
 let editBook = async (req, res) => {
     try {
-        const book = await Book.findByIdAndUpdate(
-            req.params.id,
-            req.body,
-            {
-                new: true,
-                runValidators: true
-            }
-        );
+        const updateData = { ...req.body };
 
-        if (!book) {
-            return res.status(404).json({
-                success: false,
-                message: "Book not found"
-            });
+        if (req.file) {
+            updateData.image = `/uploads/books/${req.file.filename}`;
+
+            const oldBook = await Book.findById(req.params.id);
+            if (oldBook && oldBook.image) {
+                fs.unlink(path.join(__dirname, "..", oldBook.image), () => {});
+            }
         }
 
-        res.status(200).json({
-            success: true,
-            message: "Book updated successfully",
-            book
+        const book = await Book.findByIdAndUpdate(req.params.id, updateData, {
+            new: true,
+            runValidators: true
         });
-    } // catch (err) {
-    //     res.status(400).json({
-    //         success: false,
-    //         message: err.message
-    //     });
-    // }
-    catch (err) {
 
-    console.log(err);
-    console.log(err.response);
+        if (!book) {
+            return res.status(404).json({ success: false, message: "Book not found" });
+        }
 
-    alert(err.response?.data?.message || err.message);
-
-}
+        res.status(200).json({ success: true, message: "Book updated successfully", book });
+    } catch (err) {
+        res.status(400).json({ success: false, message: err.message });
+    }
 };
 
 let deleteBook = async (req, res) => {
@@ -137,6 +143,10 @@ let deleteBook = async (req, res) => {
                 success: false,
                 message: "Book not found"
             });
+        }
+
+        if (book.image) {
+            fs.unlink(path.join(__dirname, "..", book.image), () => {});
         }
 
         res.status(200).json({
@@ -151,10 +161,12 @@ let deleteBook = async (req, res) => {
     }
 };
 
+
 module.exports = {
     showBooks,
     showBookDetails,
     addBook,
     editBook,
     deleteBook
+    
 };

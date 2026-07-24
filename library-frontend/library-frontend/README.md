@@ -43,6 +43,26 @@ Role-based redirects are handled automatically after login (`ProtectedRoute` /
    admin account without touching the DB directly. You may want to lock
    this down later so random visitors can't self-register as admin.
 
+## Book cover image upload
+
+The frontend now sends book add/edit forms as `multipart/form-data` (via
+`FormData`, field name `image`) instead of plain JSON, and shows the cover
+thumbnail in every table where a book appears (Manage Books, Browse Books,
+My Books, All Rentals).
+
+**This needs matching changes on your backend** — see the code I gave you
+separately for:
+- `middleware/upload.js` (new file, multer config)
+- `models/Book.js` (add an `image` field)
+- `controllers/bookController.js` (`addBook`/`editBook`/`deleteBook` handle `req.file`)
+- `controllers/rentalController.js` (`.populate("book", ...)` needs `image` added to the field list in both `myIssuedBooks` and `getAllRentals`, or the cover won't show up in My Books / All Rentals)
+- `routes/book.routes.js` (`upload.single("image")` on the add/edit routes)
+- `server.js` (`app.use("/uploads", express.static(...))` to actually serve the saved images)
+- `npm install multer` on the backend
+
+Until those are in place, adding/editing books will still work but the
+image just won't be saved or displayed.
+
 ## Two small things I noticed in the backend (not touched, just flagging)
 
 - `package.json` lists `"moongose"` instead of `"mongoose"` — the actual
