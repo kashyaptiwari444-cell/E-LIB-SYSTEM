@@ -13,6 +13,7 @@ import AllRentals from './pages/admin/AllRentals'
 import ManageUsers from './pages/admin/ManageUsers'
 import Main_Dash from './pages/Main_Dash'
 import Dashboard_Footer from './pages/Main_Dash_Footer'
+import Stu_dash from './pages/student/Stu_dash'
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <Navbar />
+                <Stu_dash/>
                 <BooksList />
               </ProtectedRoute>
             }

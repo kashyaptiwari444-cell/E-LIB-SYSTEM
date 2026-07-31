@@ -65,9 +65,14 @@ const Dashboard_Footer = () => {
 
       {/* Footer */}
 
-      <footer className="footer">
-        © 2026 E-Library Management System | Made with ❤️ using MERN
-      </footer>
+ <footer className="footer">
+        <div className="border-t border-slate-800 py-5 text-center text-gray-500 text-sm">
+        © {new Date().getFullYear()} 📚APNA-LIBRARY | All Rights Reserved KASHYAP❤️ | Designed &
+        Developed with ❤️
+      </div>
+      
+        </footer>
+
 
     </div>
   );

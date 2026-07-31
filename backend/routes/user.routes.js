@@ -10,6 +10,7 @@ const {
 } = require("../controllers/userController");
 
 router.get('/', showHome);
+
 router.get('/show-details/:id', showDetailsPage);
 
 router.post('/add-user', addUser);

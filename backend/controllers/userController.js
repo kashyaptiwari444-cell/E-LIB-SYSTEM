@@ -38,7 +38,8 @@ const addUser = async (req, res) => {
 
         if (existUser) {
             return res.status(400).json({
-                message: "Email already exists"
+                success: false,
+                message: "Email already exists",
             });
         }
 
@@ -48,28 +49,48 @@ const addUser = async (req, res) => {
             name,
             email,
             password: hashedPassword,
-            role
+            role,
         });
 
-        // Welcome Email
-        await sendEmail(
+        // Send email without affecting registration
+        sendEmail(
             user.email,
-            "Welcome to 📚E-Library-System",
-            `Hello ${user.name},
-        📚Welcome to E-Library Management System.
-        📚Your account has been created successfully.
-        🎯Happy Reading!`
-        );
+            "📚 Welcome to E-Library System",
+            `
+            <div style="font-family:Arial,sans-serif;padding:20px">
+                <h2>Welcome, ${user.name}! 👋</h2>
 
-        res.status(201).json({
-            message: "User Registered Successfully",
-            user
+                <p>Your account has been created successfully.</p>
+
+                <p><strong>Email:</strong> ${user.email}</p>
+                <p><strong>Role:</strong> ${user.role}</p>
+
+                <br>
+
+                <p>Happy Reading 📚</p>
+
+                <p>
+                    Regards,<br>
+                    <strong>E-Library Team</strong>
+                </p>
+            </div>
+            `
+        ).catch(err => console.error("Email Error:", err));
+
+        // Remove password from response
+        const { password: _, ...userData } = user.toObject();
+
+        return res.status(201).json({
+            success: true,
+            message: "Registration Successful",
+            user: userData,
         });
 
-    } catch (error) {
+    } catch (err) {
 
-        res.status(500).json({
-            message: error.message
+        return res.status(500).json({
+            success: false,
+            message: err.message,
         });
 
     }

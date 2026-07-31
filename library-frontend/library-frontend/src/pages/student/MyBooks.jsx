@@ -39,7 +39,8 @@ export default function MyBooks() {
 
   return (
     <div>
-      <h2>My Issued Books</h2>
+      <center>
+   <u> <h2>My Issued Books</h2></u></center>
       {message && <p className="info">{message}</p>}
 
       {loading ? (

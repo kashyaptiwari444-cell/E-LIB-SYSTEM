@@ -8,7 +8,7 @@ const Dashboard = () => {
       {/* Navbar */}
       <nav className="navbar">
         <div className="logo">
-          📚 E-Library
+          📚 Apna-Library
         </div>
 
         <div className="nav-links">
@@ -29,11 +29,11 @@ const Dashboard = () => {
 
       <section className="hero">
 
-        <div className="hero-content">
+        <div className="hero-content fw-bold">
 
           <h1>
             Welcome to
-            <span> E-Library Management System</span>
+            <span> Apna-Library Management System</span>
           </h1>
 
           <p>
@@ -44,13 +44,13 @@ const Dashboard = () => {
 
           <div className="hero-buttons">
  
-            <Link to="/login" className="hero-btn login">
+            {/* <Link to="/login" className="hero-btn login">
               Login
             </Link>
 
             <Link to="/register" className="hero-btn register">
               Register
-            </Link> 
+            </Link>  */}
 
           </div>
 
