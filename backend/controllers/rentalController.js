@@ -41,6 +41,22 @@ const issueBook = async (req, res) => {
         }
 
 
+        // ================= SAME BOOK CHECK =================
+            const alreadyIssued = await Rental.findOne({
+                student,
+                book,
+                returned: false
+            });
+
+            if (alreadyIssued) {
+                return res.status(400).json({
+                    message: "You have already issued this book."
+                });
+            }
+
+
+
+
         const issueDate = new Date();
 
         const autoReturnDate = new Date(issueDate);

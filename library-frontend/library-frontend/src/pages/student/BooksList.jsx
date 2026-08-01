@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import api from '../../api/axios'
 import { bookImageUrl } from '../../utils/imageUrl'
+import { toast } from 'react-toastify'
 
 export default function BooksList() {
   const [books, setBooks] = useState([])
@@ -43,7 +44,7 @@ export default function BooksList() {
       setBooks(res.data.books)
       setTotalPages(res.data.totalPages || 1)
     } catch (err) {
-      setMessage(err.response?.data?.message || 'Failed to load books')
+      toast.error(err.response?.data?.message || 'Failed to load books')
     } finally {
       setLoading(false)
     }
@@ -76,7 +77,7 @@ const handleSearch = (e) => {
       setMessage(res.data.message)
       fetchBooks()
     } catch (err) {
-      setMessage(err.response?.data?.message || 'Failed to issue book')
+      toast.error(err.response?.data?.message || 'Failed to issue book')
     }
   }
 

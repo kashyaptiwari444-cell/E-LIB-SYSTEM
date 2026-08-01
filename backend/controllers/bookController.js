@@ -167,6 +167,5 @@ module.exports = {
     showBookDetails,
     addBook,
     editBook,
-    deleteBook
-    
+    deleteBook  
 };

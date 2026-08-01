@@ -15,13 +15,22 @@ import Main_Dash from './pages/Main_Dash'
 import Dashboard_Footer from './pages/Main_Dash_Footer'
 import Stu_dash from './pages/student/Stu_dash'
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 function App() {
   return (
     <>
       
       <div className="container">
+        
+
+
+          <ToastContainer position="top-right" autoClose={3000} theme="colored" />
+
         <Routes>
 
+                      {/* Routes */}
           <Route path="/" element={<Navigate to="/main_dash" replace />} />
           <Route path='/main_dash' element={
             <>

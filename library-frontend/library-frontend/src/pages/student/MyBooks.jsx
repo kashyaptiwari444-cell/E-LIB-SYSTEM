@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import api from '../../api/axios'
 import { bookImageUrl } from '../../utils/imageUrl'
+import { toast } from 'react-toastify'
 
 export default function MyBooks() {
   const [rentals, setRentals] = useState([])
@@ -28,10 +29,10 @@ export default function MyBooks() {
     try {
       const res = await api.put(`/rentals/return/${rentalId}`)
       const fine = res.data.rental.fine
-      setMessage(fine > 0 ? `Book returned. Fine: ₹${fine}` : 'Book returned successfully')
+      toast.success(fine > 0 ? `Book returned. Fine: ₹${fine}` : 'Book returned successfully')
       fetchRentals()
     } catch (err) {
-      setMessage(err.response?.data?.message || 'Failed to return book')
+      toast.error(err.response?.data?.message || 'Failed to return book')
     }
   }
 
