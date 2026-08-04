@@ -60,6 +60,7 @@ export default function Register() {
           {loading ? 'Registering...' : 'Register'}
         </button>
       </form>
+     
       <p>
         Already have an account? <Link to="/login">Login</Link>
       </p>

@@ -50,6 +50,9 @@ export default function Login() {
           {loading ? 'Logging in...' : 'Login'}
         </button>
       </form>
+       <p>
+        Forget Password <Link to="/forget-password">forget password</Link>
+      </p>
       <p>
         New here? <Link to="/register">Register</Link>
       </p>

@@ -1,4 +1,7 @@
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto")
+const User = require("../models/User");
+
 
 const auth = (req, res, next) => {
 
@@ -33,5 +36,41 @@ const auth = (req, res, next) => {
 
     }
 };
+
+
+exports.forgetPassword = async(req,res)=>{
+    try{
+        const { email } = req.body;
+
+        //check user
+        const user = await User.findOne({ email });
+
+        if(!user){
+            return res.status(404).json({
+                message:"User Not Found!"
+            });
+        }
+        
+        //generate token
+        const token = crypto.randomBytes(32).toString("hex");
+
+
+        //save token in database
+        user.resetPasswordToken = token;
+        user.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
+
+        await user.save();
+
+        //send email
+        res.status(200).json({
+            message: "Reset link sent",
+            token
+        })
+    }
+    catch(err){
+        res.status(500).json({ message: err.message});
+    }
+};
+
 
 module.exports = auth;

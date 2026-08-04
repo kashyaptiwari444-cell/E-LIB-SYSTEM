@@ -15,16 +15,13 @@ import Main_Dash from './pages/Main_Dash'
 import Dashboard_Footer from './pages/Main_Dash_Footer'
 import Stu_dash from './pages/student/Stu_dash'
 
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import ForgotPassword from './pages/ForgetPassword'
 function App() {
   return (
     <>
-      
       <div className="container">
-        
-
 
           <ToastContainer position="top-right" autoClose={3000} theme="colored" />
 
@@ -42,6 +39,7 @@ function App() {
             } />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/forget-password" element={<ForgotPassword />} />
             
           {/* Student routes */}
           <Route
