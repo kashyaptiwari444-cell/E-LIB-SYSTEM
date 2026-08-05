@@ -74,7 +74,7 @@ const handleSearch = (e) => {
     setMessage('')
     try {
       const res = await api.post('/rentals/issue', { book: bookId })
-      setMessage(res.data.message)
+      toast.success(res.data.message)
       fetchBooks()
     } catch (err) {
       toast.error(err.response?.data?.message || 'Failed to issue book')
